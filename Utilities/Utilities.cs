@@ -22,9 +22,9 @@ namespace Utilities
 
     // The description will display in the tooltip
     // and in the help window for the node.
-    [NodeDescription("UtilitiesDescription",typeof(Resources))]
+    [NodeDescription("UtilitiesDescription")]//,typeof(Resources))]
 
-    //[IsDesignScriptCompatible]
+    [IsDesignScriptCompatible]
     public class Utilities : NodeModel
     {
         #region private members
