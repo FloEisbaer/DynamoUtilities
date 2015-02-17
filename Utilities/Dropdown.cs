@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using Autodesk.DesignScript.Runtime;
 using Dynamo.Controls;
@@ -8,6 +10,7 @@ using Dynamo.UI.Commands;
 using Dynamo.Wpf;
 using ProtoCore.AST.AssociativeAST;
 using Utilities.Properties;
+using VMDataBridge;
 
 namespace Utilities
 {
@@ -30,8 +33,11 @@ namespace Utilities
     {
         #region private members
 
-        private IList _list;
+        private IList<string> _list;
         private int _index;
+                
+        public event Action<Object> EvaluationComplete;
+        public new object CachedValue;
 
         #endregion
 
@@ -41,7 +47,7 @@ namespace Utilities
         /// A value that will be bound to our
         /// custom UI's awesome slider.
         /// </summary>
-        public IList List
+        public IList<string> List
         {
             get { return _list; }
             set
@@ -97,13 +103,37 @@ namespace Utilities
             // support argument lacing, you can set this to LacingStrategy.Disabled.
             ArgumentLacing = LacingStrategy.Disabled;
 
-            List = new ArrayList() {1, 2, 5};
+            ShouldDisplayPreviewCore = false;
+
+            List = new List<string> {"la", "le", "lu"};
             Index = 0;
         }
 
         #endregion
 
         #region public methods
+
+        protected override void OnBuilt()
+        {
+            base.OnBuilt();
+            DataBridge.Instance.RegisterCallback(GUID.ToString(), OnEvaluationComplete);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            DataBridge.Instance.UnregisterCallback(GUID.ToString());
+        }
+
+        private void OnEvaluationComplete(object obj)
+        {
+            this.CachedValue = obj;
+
+            if (EvaluationComplete != null)
+            {
+                EvaluationComplete(obj);
+            }
+        }
 
         /// <summary>
         /// If this method is not overriden, Dynamo will, by default
@@ -125,7 +155,12 @@ namespace Utilities
             // Do not throw an exception during AST creation. If you
             // need to convey a failure of this node, then use
             // AstFactory.BuildNullNode to pass out null.
-            
+
+            var firstNode = inputAstNodes[0];
+            var dfdf = firstNode.Name;
+
+            var inPort = InPorts[0];
+
             // Using the AstFactory class, we can build AstNode objects
             // that assign doubles, assign function calls, build expression lists, etc.
             return new[]
@@ -138,16 +173,18 @@ namespace Utilities
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(0),
                     AstFactory.BuildExprList(inputAstNodes)),//[_index])),
+
+
                     
                 // For the second node, return an index of the fixed list
                 AstFactory.BuildAssignment(
-                    GetAstIdentifierForOutputIndex(0),
-                    AstFactory.BuildExprList((List<AssociativeNode>) List[_index])),
+                    GetAstIdentifierForOutputIndex(1),
+                    AstFactory.BuildStringNode(List[_index])),
 
                 // For the third node, we'll build a double node that 
                 // passes along our value for awesome.
                 AstFactory.BuildAssignment(
-                    GetAstIdentifierForOutputIndex(1),
+                    GetAstIdentifierForOutputIndex(2),
                     AstFactory.BuildIntNode(_index))
             };
         }
