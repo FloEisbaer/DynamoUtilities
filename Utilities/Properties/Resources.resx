@@ -122,7 +122,7 @@
     <comment>Description for Hello Dynamo</comment>
   </data>
   <data name="UtilitiesPortDataInputToolTip" xml:space="preserve">
-    <value>Input a string.</value>
+    <value>Input a list.</value>
   </data>
   <data name="UtilitiesPortDataOutputToolTip" xml:space="preserve">
     <value>A result.</value>

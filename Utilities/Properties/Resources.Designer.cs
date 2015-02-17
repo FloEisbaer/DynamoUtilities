@@ -70,7 +70,7 @@ namespace Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Input a string..
+        ///   Looks up a localized string similar to Input a list..
         /// </summary>
         internal static string UtilitiesPortDataInputToolTip {
             get {
