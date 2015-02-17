@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Windows;
 using Autodesk.DesignScript.Runtime;
 using Dynamo.Controls;
@@ -25,12 +26,12 @@ namespace Utilities
     [NodeDescription("UtilitiesDescription")]//,typeof(Resources))]
 
     [IsDesignScriptCompatible]
-    public class Utilities : NodeModel
+    public class Dropdown : NodeModel
     {
         #region private members
 
-        private string _list;
-        private double _awesome;
+        private IList _list;
+        private int _index;
 
         #endregion
 
@@ -40,7 +41,7 @@ namespace Utilities
         /// A value that will be bound to our
         /// custom UI's awesome slider.
         /// </summary>
-        public string List
+        public IList List
         {
             get { return _list; }
             set
@@ -52,13 +53,13 @@ namespace Utilities
             }
         }
 
-        public double Awesome
+        public int Index
         {
-            get { return _awesome; }
-            set
+            get { return _index; }
+            set 
             {
-                _awesome = value;
-                RaisePropertyChanged("Awesome");
+                _index = value;
+                RaisePropertyChanged("Index");
 
                 OnNodeModified();
             }
@@ -73,7 +74,7 @@ namespace Utilities
         /// the input and output ports and specify the argument
         /// lacing.
         /// </summary>
-        public Utilities()
+        public Dropdown()
         {
             // When you create a UI node, you need to do the
             // work of setting up the ports yourself. To do this,
@@ -84,6 +85,7 @@ namespace Utilities
             // Nodes can have an arbitrary number of inputs and outputs.
             // If you want more ports, just create more PortData objects.
             OutPortData.Add(new PortData("item", Resources.UtilitiesPortDataOutputToolTip));
+            OutPortData.Add(new PortData("fixedListItem", Resources.UtilitiesPortDataOutputToolTip));
             OutPortData.Add(new PortData("some awesome", Resources.UtilitiesPortDataOutputToolTip));
 
             // This call is required to ensure that your ports are
@@ -95,8 +97,8 @@ namespace Utilities
             // support argument lacing, you can set this to LacingStrategy.Disabled.
             ArgumentLacing = LacingStrategy.Disabled;
 
-            List = "hallo";
-            Awesome = 2;
+            List = new ArrayList() {1, 2, 5};
+            Index = 0;
         }
 
         #endregion
@@ -132,17 +134,21 @@ namespace Utilities
                 // the unique identifier which represents an output on this node
                 // and 'assigns' that variable the expression that you create.
                 
-                // For the first node, we'll build a double node that 
-                // passes along our value for awesome.
+                // For the first node, return an index of the input
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(0),
-                    AstFactory.BuildStringNode(_list)),
+                    AstFactory.BuildExprList(inputAstNodes)),//[_index])),
                     
-                // For the second node, we'll build a double node that 
+                // For the second node, return an index of the fixed list
+                AstFactory.BuildAssignment(
+                    GetAstIdentifierForOutputIndex(0),
+                    AstFactory.BuildExprList((List<AssociativeNode>) List[_index])),
+
+                // For the third node, we'll build a double node that 
                 // passes along our value for awesome.
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(1),
-                    AstFactory.BuildDoubleNode(_awesome))
+                    AstFactory.BuildIntNode(_index))
             };
         }
 
@@ -153,7 +159,7 @@ namespace Utilities
     /// <summary>
     ///     View customizer for Utilities Node Model.
     /// </summary>
-    public class UtilitiesNodeViewCustomization : INodeViewCustomization<Utilities>
+    public class UtilitiesNodeViewCustomization : INodeViewCustomization<Dropdown>
     {
         /// <summary>
         /// At run-time, this method is called during the node 
@@ -164,7 +170,7 @@ namespace Utilities
         /// </summary>
         /// <param name="model">The NodeModel representing the node's core logic.</param>
         /// <param name="nodeView">The NodeView representing the node in the graph.</param>
-        public void CustomizeView(Utilities model, NodeView nodeView)
+        public void CustomizeView(Dropdown model, NodeView nodeView)
         {
             // The view variable is a reference to the node's view.
             // In the middle of the node is a grid called the InputGrid.
