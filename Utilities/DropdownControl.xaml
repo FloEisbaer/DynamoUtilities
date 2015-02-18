@@ -6,15 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300">
     <Grid Name="CustomUIGrid">
-        <ComboBox Name="cmbColors" Margin="10">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Rectangle Fill="{Binding Name}" Width="16" Height="16" Margin="0,2,5,2" />
-                        <TextBlock Text="{Binding Name}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+        <ComboBox Name="Box" ItemsSource="{Binding}" SelectionChanged="ComboBox_SelectionChanged" Width="300"/>
     </Grid>
 </UserControl>

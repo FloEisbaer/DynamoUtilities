@@ -34,6 +34,10 @@
     <DocumentationFile>bin\Release\$(UICulture)\Utilities.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DSCoreNodesUI, Version=0.7.6.4045, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Dynamo 0.7\nodes\DSCoreNodesUI.dll</HintPath>
+    </Reference>
     <Reference Include="DynamoCore">
       <HintPath>C:\Program Files\Dynamo 0.7\DynamoCore.dll</HintPath>
       <Private>False</Private>
@@ -61,6 +65,7 @@
     <Reference Include="System.Xaml" />
     <Reference Include="VMDataBridge">
       <HintPath>C:\Program Files\Dynamo 0.7\VMDataBridge.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
