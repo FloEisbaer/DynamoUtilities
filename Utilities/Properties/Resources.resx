@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="HelloDynamoPortDataInputToolTip" xml:space="preserve">
+    <value>input any</value>
+  </data>
+  <data name="HelloDynamoPortDataOutputToolTip" xml:space="preserve">
+    <value>A result.</value>
+  </data>
   <data name="UtilitiesDescription" xml:space="preserve">
     <value>A sample UI node which displays custom UI.</value>
     <comment>Description for Hello Dynamo</comment>

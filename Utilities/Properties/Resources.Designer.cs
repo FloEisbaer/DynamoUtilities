@@ -61,6 +61,24 @@ namespace Utilities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to input any.
+        /// </summary>
+        internal static string HelloDynamoPortDataInputToolTip {
+            get {
+                return ResourceManager.GetString("HelloDynamoPortDataInputToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A result..
+        /// </summary>
+        internal static string HelloDynamoPortDataOutputToolTip {
+            get {
+                return ResourceManager.GetString("HelloDynamoPortDataOutputToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A sample UI node which displays custom UI..
         /// </summary>
         internal static string UtilitiesDescription {

@@ -130,7 +130,7 @@ namespace Utilities
                 // For the first node, return an index of the input
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(0),
-                    AstFactory.BuildExprList(inputAstNodes)),
+                    AstFactory.BuildPrimitiveNodeFromObject(Item)),
 
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(1),
@@ -167,37 +167,37 @@ namespace Utilities
             // property change notifications which will update the UI.
             dropdownControl.DataContext = model;
 
-            //model.RequestChangeDropdown += delegate
-            //{
-            //    model.DispatchOnUIThread(delegate
-            //    {
-            //        var listNode = model.InPorts[0].Connectors[0].Start.Owner;
-            //        var listIndex = model.InPorts[0].Connectors[0].Start.Index;
+            model.RequestChangeDropdown += delegate
+            {
+                model.DispatchOnUIThread(delegate
+                {
+                    var listNode = model.InPorts[0].Connectors[0].Start.Owner;
+                    var listIndex = model.InPorts[0].Connectors[0].Start.Index;
 
-            //        var listId = listNode.GetAstIdentifierForOutputIndex(listIndex).Name;
+                    var listId = listNode.GetAstIdentifierForOutputIndex(listIndex).Name;
 
-            //        var listMirror = dm.EngineController.GetMirror(listId);
+                    var listMirror = dm.EngineController.GetMirror(listId);
 
-            //        var list = new List<string>();
+                    var list = new List<string>();
 
-            //        if (listMirror == null)
-            //        {
-            //            list.Add("");
-            //        }
-            //        else
-            //        {
-            //             if (listMirror.GetData().IsCollection)
-            //            {
-            //                list.AddRange(listMirror.GetData().GetElements().Select(data => data.Data.ToString()));
-            //            }
-            //        }
-                   
-            //        dropdownControl.AddItems(list.ToObservableCollection());
+                    if (listMirror == null)
+                    {
+                        list.Add("");
+                    }
+                    else
+                    {
+                        if (listMirror.GetData().IsCollection)
+                        {
+                            list.AddRange(listMirror.GetData().GetElements().Select(data => data.Data.ToString()));
+                        }
+                    }
 
-            //        //model.Value = dropdownControl.Selection;
+                    dropdownControl.AddItems(list.ToObservableCollection());
 
-            //    });
-            //};
+                    //model.Value = dropdownControl.Selection;
+
+                });
+            };
 
             
         }

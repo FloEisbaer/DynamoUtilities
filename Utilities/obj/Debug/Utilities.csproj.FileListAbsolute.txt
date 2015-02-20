@@ -14,3 +14,5 @@ F:\Projekte\02_Code\DynamoProgramming\Utilities\trunk\Utilities\obj\Debug\Dropdo
 F:\Projekte\02_Code\DynamoProgramming\Utilities\trunk\Utilities\obj\Debug\Watch2DControl.g.cs
 F:\Projekte\02_Code\DynamoProgramming\Utilities\trunk\Utilities\obj\Debug\DropdownControl.g.cs
 F:\Projekte\02_Code\DynamoProgramming\Utilities\trunk\Utilities\obj\Debug\Utilities.csprojResolveAssemblyReference.cache
+F:\Projekte\02_Code\DynamoProgramming\Utilities\trunk\Utilities\obj\Debug\HelloDynamoControl.baml
+F:\Projekte\02_Code\DynamoProgramming\Utilities\trunk\Utilities\obj\Debug\HelloDynamoControl.g.cs
