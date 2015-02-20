@@ -1,20 +1,16 @@
 ﻿using System.Collections;
 using System.Windows.Controls;
+using System.Windows.Media.Media3D;
 
 namespace Utilities
 {
     public partial class DropdownControl
     {
-        private string _selection;
+        private Dropdown _dropdown;
 
-        public string Selection
+        public DropdownControl(Dropdown dropdown)
         {
-            get { return _selection; }
-            set { _selection = value; }
-        }
-
-        public DropdownControl()
-        {
+            _dropdown = dropdown;
             InitializeComponent();
         }
 
@@ -25,7 +21,9 @@ namespace Utilities
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _selection = Box.ItemStringFormat;
+            _dropdown.Index = Box.SelectedIndex;
+            _dropdown.Item = Box.SelectedItem;
+            //_selection = Box.ItemStringFormat;
         }
     }
 }

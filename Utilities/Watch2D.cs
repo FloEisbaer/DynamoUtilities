@@ -102,7 +102,7 @@ namespace Utilities
             // you can populate the InPortData and the OutPortData
             // collections with PortData objects describing your ports.
             InPortData.Add(new PortData("1", Resources.UtilitiesPortDataInputToolTip));
-            InPortData.Add(new PortData("2", Resources.UtilitiesPortDataInputToolTip));
+            //InPortData.Add(new PortData("2", Resources.UtilitiesPortDataInputToolTip));
 
             // Nodes can have an arbitrary number of inputs and outputs.
             // If you want more ports, just create more PortData objects.
@@ -221,56 +221,33 @@ namespace Utilities
             {
                 model.DispatchOnUIThread(delegate
                 {
-                    var colorStartNode = model.InPorts[0].Connectors[0].Start.Owner;
-                    var startIndex = model.InPorts[0].Connectors[0].Start.Index;
-                    var colorEndNode = model.InPorts[1].Connectors[0].Start.Owner;
-                    var endIndex = model.InPorts[1].Connectors[0].Start.Index;
+                    var xValueNode = model.InPorts[0].Connectors[0].Start.Owner;
+                    var xValueIndex = model.InPorts[0].Connectors[0].Start.Index;
 
-                    var startId = colorStartNode.GetAstIdentifierForOutputIndex(startIndex).Name;
-                    var endId = colorEndNode.GetAstIdentifierForOutputIndex(endIndex).Name;
+                    var xValueId = xValueNode.GetAstIdentifierForOutputIndex(xValueIndex).Name;
 
-                    var startMirror = dm.EngineController.GetMirror(startId);
-                    var endMirror = dm.EngineController.GetMirror(endId);
+                    var startMirror = dm.EngineController.GetMirror(xValueId);
 
-                    object start = 0;
-                    object end = 0;
+                    var start = new List<double>();
 
                     if (startMirror == null)
                     {
-                        start = -1.1;
+                        start.Add(1.1);
                     }
                     else
                     {
                         if (startMirror.GetData().IsCollection)
                         {
-                            start = startMirror.GetData().GetElements().
-                                Select(x => x.Data).FirstOrDefault();
+                            start.AddRange(startMirror.GetData().GetElements().Select(data => (double) data.Data));
                         }
                         else
                         {
-                            start = startMirror.GetData().Data;
+                            var x = (double) startMirror.GetData().Data;
+                            start.Add(x); 
                         }
                     }
 
-                    if (endMirror == null)
-                    {
-                        end = 1.1;
-                    }
-                    else
-                    {
-                        if (endMirror.GetData().IsCollection)
-                        {
-                            end = endMirror.GetData().GetElements().
-                                Select(x => x.Data).FirstOrDefault();
-                        }
-                        else
-                        {
-                            end = endMirror.GetData().Data;
-                        }
-                    }
-
-                    watch2DControl.ymin = (start == null) ? 0 : (double) start;
-                    watch2DControl.ymax = (end == null) ? 0 : (double) end;
+                    watch2DControl.Values = start;
                     watch2DControl.AddChart();
                 });
             };

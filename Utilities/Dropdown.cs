@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Controls;
 using Autodesk.DesignScript.Runtime;
 using Dynamo.Controls;
 using Dynamo.Models;
@@ -22,7 +23,8 @@ namespace Utilities
     {
         #region members
 
-        private string _value;
+        private int _index;
+        private object _item;
         public event EventHandler RequestChangeDropdown;
 
         #endregion
@@ -30,17 +32,30 @@ namespace Utilities
         #region properties
 
         /// <summary>
-        /// A value that will be bound to our
-        /// custom UI's awesome slider.
+        /// The selected Index
         /// </summary>
 
-        public string Value
+        public int Index
         {
-            get { return _value; }
+            get { return _index; }
             set
             {
-                _value = value;
+                _index = value;
+                RaisePropertyChanged("Index");
+
+                OnNodeModified();
+            }
+        }
+
+        public object Item
+        {
+            get { return _item; }
+            set
+            {
+                _item = value;
                 RaisePropertyChanged("Value");
+
+                OnNodeModified();
             }
         }
 
@@ -75,7 +90,9 @@ namespace Utilities
 
             InPortData.Add(new PortData("list", Resources.UtilitiesPortDataInputToolTip));
 
-            OutPortData.Add(new PortData("item", Resources.UtilitiesPortDataOutputToolTip));
+            OutPortData.Add(new PortData("Item", Resources.UtilitiesPortDataOutputToolTip));
+            OutPortData.Add(new PortData("Index", Resources.UtilitiesPortDataOutputToolTip));
+            OutPortData.Add(new PortData("through", Resources.UtilitiesPortDataOutputToolTip));
 
             RegisterAllPorts();
 
@@ -89,7 +106,8 @@ namespace Utilities
             
             this.PropertyChanged += Dropdown_PropertyChanged;
 
-            Value = "";
+            Item = "default";
+            Index = -1;
 
         }
 
@@ -112,7 +130,16 @@ namespace Utilities
                 // For the first node, return an index of the input
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(0),
-                    AstFactory.BuildStringNode(Value))//[_index])),
+                    AstFactory.BuildExprList(inputAstNodes)),
+
+                AstFactory.BuildAssignment(
+                    GetAstIdentifierForOutputIndex(1),
+                    AstFactory.BuildIntNode(Index)),
+
+                AstFactory.BuildAssignment(
+                GetAstIdentifierForOutputIndex(2),
+                AstFactory.BuildExprList(inputAstNodes))
+
 
             };
         }
@@ -132,7 +159,7 @@ namespace Utilities
             var dm = nodeView.ViewModel.DynamoViewModel.Model;
             // Create an instance of our custom UI class (defined in xaml),
             // and put it into the input grid.
-            var dropdownControl = new DropdownControl();
+            var dropdownControl = new DropdownControl(model);
             nodeView.inputGrid.Children.Add(dropdownControl);
 
             // Set the data context for our control to be this class.
@@ -140,37 +167,39 @@ namespace Utilities
             // property change notifications which will update the UI.
             dropdownControl.DataContext = model;
 
-            model.RequestChangeDropdown += delegate
-            {
-                model.DispatchOnUIThread(delegate
-                {
-                    var listNode = model.InPorts[0].Connectors[0].Start.Owner;
-                    var listIndex = model.InPorts[0].Connectors[0].Start.Index;
+            //model.RequestChangeDropdown += delegate
+            //{
+            //    model.DispatchOnUIThread(delegate
+            //    {
+            //        var listNode = model.InPorts[0].Connectors[0].Start.Owner;
+            //        var listIndex = model.InPorts[0].Connectors[0].Start.Index;
 
-                    var listId = listNode.GetAstIdentifierForOutputIndex(listIndex).Name;
+            //        var listId = listNode.GetAstIdentifierForOutputIndex(listIndex).Name;
 
-                    var listMirror = dm.EngineController.GetMirror(listId);
+            //        var listMirror = dm.EngineController.GetMirror(listId);
 
-                    var list = new List<string>();
+            //        var list = new List<string>();
 
-                    if (listMirror == null)
-                    {
-                        list.Add("");
-                    }
-                    else
-                    {
-                         if (listMirror.GetData().IsCollection)
-                        {
-                            list.AddRange(listMirror.GetData().GetElements().Select(data => data.Data.ToString()));
-                        }
-                    }
+            //        if (listMirror == null)
+            //        {
+            //            list.Add("");
+            //        }
+            //        else
+            //        {
+            //             if (listMirror.GetData().IsCollection)
+            //            {
+            //                list.AddRange(listMirror.GetData().GetElements().Select(data => data.Data.ToString()));
+            //            }
+            //        }
                    
-                    dropdownControl.AddItems(list.ToObservableCollection());
+            //        dropdownControl.AddItems(list.ToObservableCollection());
 
-                    //model.Value = dropdownControl.Selection;
+            //        //model.Value = dropdownControl.Selection;
 
-                });
-            };
+            //    });
+            //};
+
+            
         }
 
         /// <summary>

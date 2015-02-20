@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -7,46 +10,48 @@ namespace Utilities
 {
     public partial class Watch2DControl
     {
-        private double xmin = 0;
-        private double xmax = 6.5;
+        private List<double> _Values;
 
-        public double ymin = -1.1;
-        public double ymax = 1.1;
+        private double xmin = 0;
+        private double xmax;
+        private double ymin = 0;
+        private double ymax;
+
         private Polyline pl;
+
+        public List<double> Values
+        {
+            get { return _Values; }
+            set { _Values = value; }
+        }
 
         public Watch2DControl()
         {
             InitializeComponent();
+            _Values = new List<double>() {2.0, 5.0, 3.0};
             //AddChart();
         }
 
         public void AddChart()
         {
+            PlotCanvas.Children.Clear();
             // Draw sine curve:
             pl = new Polyline { Stroke = Brushes.Black };
-            for (int i = 0; i < 70; i++)
+
+            xmax = _Values.Count - 1;
+            foreach (var xValue in _Values)
             {
-                double x = i / 5.0;
-                double y = Math.Sin(x);
+                if (xValue > ymax) ymax = xValue;
+            }
+
+            for (int i = 0; i <= xmax; i++)
+            {
+                double x = i;
+                double y = _Values[i];
                 pl.Points.Add(CurvePoint(
                 new Point(x, y)));
             }
 
-            PlotCanvas.Children.Add(pl);
-            // Draw cosine curve:
-            pl = new Polyline
-            {
-                Stroke = Brushes.Black,
-                StrokeDashArray = new DoubleCollection(
-                    new double[] { 4, 3 })
-            };
-            for (int i = 0; i < 70; i++)
-            {
-                double x = i / 5.0;
-                double y = Math.Cos(x);
-                pl.Points.Add(CurvePoint(
-                new Point(x, y)));
-            }
             PlotCanvas.Children.Add(pl);
         }
 
