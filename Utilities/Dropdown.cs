@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Controls;
@@ -24,7 +25,7 @@ namespace Utilities
         #region members
 
         private int _index;
-        private object _item;
+        private ObservableCollection<DynamoDropDownItem> _items = new ObservableCollection<DynamoDropDownItem>();
         public event EventHandler RequestChangeDropdown;
 
         #endregion
@@ -47,13 +48,13 @@ namespace Utilities
             }
         }
 
-        public object Item
+        public ObservableCollection<DynamoDropDownItem> Items
         {
-            get { return _item; }
+            get { return _items; }
             set
             {
-                _item = value;
-                RaisePropertyChanged("Value");
+                _items = value;
+                RaisePropertyChanged("Items");
 
                 OnNodeModified();
             }
@@ -92,7 +93,7 @@ namespace Utilities
 
             OutPortData.Add(new PortData("Item", Resources.UtilitiesPortDataOutputToolTip));
             OutPortData.Add(new PortData("Index", Resources.UtilitiesPortDataOutputToolTip));
-            OutPortData.Add(new PortData("through", Resources.UtilitiesPortDataOutputToolTip));
+            //OutPortData.Add(new PortData("through", Resources.UtilitiesPortDataOutputToolTip));
 
             RegisterAllPorts();
 
@@ -106,8 +107,8 @@ namespace Utilities
             
             this.PropertyChanged += Dropdown_PropertyChanged;
 
-            Item = "default";
-            Index = -1;
+            Items.Add(new DynamoDropDownItem("nothing selected", null));
+            Index = 0;
 
         }
 
@@ -130,16 +131,15 @@ namespace Utilities
                 // For the first node, return an index of the input
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(0),
-                    AstFactory.BuildPrimitiveNodeFromObject(Item)),
+                    AstFactory.BuildPrimitiveNodeFromObject(Items[Index].Item)),
 
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(1),
-                    AstFactory.BuildIntNode(Index)),
+                    AstFactory.BuildIntNode(Index))//,
 
-                AstFactory.BuildAssignment(
-                GetAstIdentifierForOutputIndex(2),
-                AstFactory.BuildExprList(inputAstNodes))
-
+                //AstFactory.BuildAssignment(
+                //GetAstIdentifierForOutputIndex(2),
+                //AstFactory.BuildStringNode(inputAstNodes[0].ToString()))
 
             };
         }
@@ -178,21 +178,30 @@ namespace Utilities
 
                     var listMirror = dm.EngineController.GetMirror(listId);
 
-                    var list = new List<string>();
-
+                    model.Items.Clear();
+                    
                     if (listMirror == null)
                     {
-                        list.Add("");
+                        model.Items.Add(new DynamoDropDownItem("nothing selected", null));
                     }
                     else
                     {
                         if (listMirror.GetData().IsCollection)
                         {
-                            list.AddRange(listMirror.GetData().GetElements().Select(data => data.Data.ToString()));
+                            foreach (var data in listMirror.GetData().GetElements())
+                            {
+                                model.Items.Add(new DynamoDropDownItem(data.Data.ToString(), data.Data));
+                            }
+                        }
+                        else
+                        {
+                            var data = listMirror.GetData().Data;
+                            model.Items.Add(new DynamoDropDownItem(data.ToString(), data));
                         }
                     }
 
-                    dropdownControl.AddItems(list.ToObservableCollection());
+                    var itemStrings = model.Items.Select(x => x.ToString());
+                    dropdownControl.AddItems(itemStrings.ToObservableCollection());
 
                     //model.Value = dropdownControl.Selection;
 

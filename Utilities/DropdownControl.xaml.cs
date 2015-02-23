@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 
@@ -22,8 +23,18 @@ namespace Utilities
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _dropdown.Index = Box.SelectedIndex;
-            _dropdown.Item = Box.SelectedItem;
-            //_selection = Box.ItemStringFormat;
+        }
+
+        private void btnPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            if (Box.SelectedIndex > 0)
+                Box.SelectedIndex = Box.SelectedIndex - 1;
+        }
+
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            if (Box.SelectedIndex < Box.Items.Count - 1)
+                Box.SelectedIndex = Box.SelectedIndex + 1;
         }
     }
 }
