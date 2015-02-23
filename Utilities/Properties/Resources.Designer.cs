@@ -61,6 +61,42 @@ namespace Utilities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Takes a list of values and returns the selected item and index..
+        /// </summary>
+        internal static string DropdownDescprition {
+            get {
+                return ResourceManager.GetString("DropdownDescprition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to input a list..
+        /// </summary>
+        internal static string DropdownPortDataInputToolTip {
+            get {
+                return ResourceManager.GetString("DropdownPortDataInputToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to index of the selected value..
+        /// </summary>
+        internal static string DropdownPortDataOutputIndexToolTip {
+            get {
+                return ResourceManager.GetString("DropdownPortDataOutputIndexToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the selected item..
+        /// </summary>
+        internal static string DropdownPortDataOutputValueToolTip {
+            get {
+                return ResourceManager.GetString("DropdownPortDataOutputValueToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to input any.
         /// </summary>
         internal static string HelloDynamoPortDataInputToolTip {
@@ -102,6 +138,33 @@ namespace Utilities.Properties {
         internal static string UtilitiesPortDataOutputToolTip {
             get {
                 return ResourceManager.GetString("UtilitiesPortDataOutputToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Takes a list of doubles and displays the values as graph or histogram..
+        /// </summary>
+        internal static string Watch2dDescription {
+            get {
+                return ResourceManager.GetString("Watch2dDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to input a list of doubles..
+        /// </summary>
+        internal static string Watch2dPortDataInputToolTip {
+            get {
+                return ResourceManager.GetString("Watch2dPortDataInputToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to returns the input..
+        /// </summary>
+        internal static string Watch2dPortDataOutputToolTip {
+            get {
+                return ResourceManager.GetString("Watch2dPortDataOutputToolTip", resourceCulture);
             }
         }
     }

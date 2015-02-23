@@ -37,6 +37,7 @@
     <Reference Include="DSCoreNodesUI, Version=0.7.6.4045, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Dynamo 0.7\nodes\DSCoreNodesUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DynamoCore">
       <HintPath>C:\Program Files\Dynamo 0.7\DynamoCore.dll</HintPath>
@@ -46,8 +47,9 @@
       <HintPath>C:\Program Files\Dynamo 0.7\DynamoCoreWpf.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism">
-      <HintPath>..\..\..\..\extern\prism\Microsoft.Practices.Prism.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Prism, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Dynamo 0.7\Microsoft.Practices.Prism.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -73,11 +75,11 @@
     <Compile Include="DropdownControl.xaml.cs">
       <DependentUpon>DropdownControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HelloDynamo.cs" />
-    <Compile Include="HelloDynamoControl.xaml.cs">
+    <None Include="HelloDynamo.cs" />
+    <None Include="HelloDynamoControl.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>HelloDynamoControl.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Watch2dControl.xaml.cs">
       <DependentUpon>Watch2dControl.xaml</DependentUpon>
     </Compile>
@@ -100,10 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="HelloDynamoControl.xaml">
+    <None Include="HelloDynamoControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Watch2dControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

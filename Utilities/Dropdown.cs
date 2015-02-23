@@ -18,7 +18,7 @@ namespace Utilities
 {
     [NodeName("DropDown")]
     [NodeCategory("Utilities")]
-    [NodeDescription("UtilitiesDescription")]//,typeof(Resources))]
+    [NodeDescription("DropdownDescription", typeof(Resources))]
     [IsDesignScriptCompatible]
     public class Dropdown : NodeModel
     {
@@ -89,10 +89,10 @@ namespace Utilities
         public Dropdown()
         {
 
-            InPortData.Add(new PortData("list", Resources.UtilitiesPortDataInputToolTip));
+            InPortData.Add(new PortData("list", Resources.DropdownPortDataInputToolTip));
 
-            OutPortData.Add(new PortData("Item", Resources.UtilitiesPortDataOutputToolTip));
-            OutPortData.Add(new PortData("Index", Resources.UtilitiesPortDataOutputToolTip));
+            OutPortData.Add(new PortData("Item", Resources.DropdownPortDataOutputValueToolTip));
+            OutPortData.Add(new PortData("Index", Resources.DropdownPortDataOutputIndexToolTip));
             //OutPortData.Add(new PortData("through", Resources.UtilitiesPortDataOutputToolTip));
 
             RegisterAllPorts();

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -10,8 +12,6 @@ namespace Utilities
 {
     public partial class Watch2DControl
     {
-        private List<double> _values;
-
         private double xmin = 0;
         private double _xmax;
         private double ymin = 0;
@@ -19,73 +19,71 @@ namespace Utilities
 
         private Polyline _pl;
 
-        private int _selectedType;
+        private static SolidColorBrush _bgrColorBrush = new SolidColorBrush() { Color = Color.FromArgb(255,229,227,223) };
 
-        public List<double> Values
-        {
-            get { return _values; }
-            set { _values = value; }
-        }
-
-        public int SelectedType
-        {
-            get { return _selectedType; }
-            set { _selectedType = value; }
-        }
+        public SolidColorBrush PlotColor { get; set; }
+        public List<double> Values { get; set; }
+        public int SelectedType { get; set; }
 
         public Watch2DControl()
         {
             InitializeComponent();
-            _values = new List<double>() {2.0, 5.0, 3.0};
-            SelectedType = 0;
+            Values = new List<double>();
+            PlotColor = new SolidColorBrush() { Color = Color.FromArgb(255, 0, 0, 0) };
+            PlotColorBox.ItemsSource = typeof (Colors).GetProperties();
+            PlotColorBox.SelectedItem = typeof (Colors).GetProperty("Black");
         }
 
         public void AddChart()
         {
             PlotCanvas.Children.Clear();
 
-            if (_selectedType == 0)
+            if (SelectedType == 0)
             {
                 DrawPlot();
             }
             else
             {
-                //DrawHisto();
+                DrawHisto();
             }
             
         }
 
         private void DrawHisto()
         {
-            var recWidth = PlotCanvas.Width/(double) Values.Count;
-
-            var rectangle = new Rectangle();
+            var recWidth = PlotCanvas.Width/Values.Count;
 
             // Create a SolidColorBrush with a red color to fill the 
             // Ellipse with.
-            var mySolidColorBrush = new SolidColorBrush();
-            mySolidColorBrush.Color = Color.FromArgb(255, 255, 255, 0);
 
-            rectangle.Height = Values[0];
-            rectangle.Width = recWidth;
+            var max = Values.Max();
+            var scale = PlotCanvas.Height/max; 
 
-            PlotCanvas.Children.Add(rectangle);
+            // middle points
+            for (int i = 0; i < Values.Count; i++)
+            {
+                var rectangle = new Rectangle { Fill = PlotColor, StrokeThickness = 1, Stroke = _bgrColorBrush };
+                rectangle.Width = recWidth;
+                rectangle.Height = Values[i] * scale;
+                PlotCanvas.Children.Add(rectangle);
+                Canvas.SetLeft(rectangle, recWidth*i);
+                Canvas.SetTop(rectangle, (max - Values[i]) *scale);
+            }
+
+            
         }
 
         private void DrawPlot()
         {
-            _pl = new Polyline {Stroke = Brushes.Black};
+            _pl = new Polyline {Stroke = PlotColor};
 
-            _xmax = _values.Count - 1;
-            foreach (var xValue in _values)
-            {
-                if (xValue > _ymax) _ymax = xValue;
-            }
+            _xmax = Values.Count - 1;
+            _ymax = Values.Max();
 
             for (int i = 0; i <= _xmax; i++)
             {
                 double x = i;
-                double y = _values[i];
+                double y = Values[i];
                 _pl.Points.Add(CurvePoint(
                     new Point(x, y)));
             }
@@ -104,9 +102,17 @@ namespace Utilities
             return result;
         }
 
-        private void CanvasType_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        private void CanvasType_OnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
-            _selectedType = CanvasType.SelectedIndex;
+            SelectedType = CanvasType.SelectedIndex;
+            //update Chart();
+        }
+
+        private void PlotColorBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Color myColor = (Color)(PlotColorBox.SelectedItem as PropertyInfo).GetValue(null, null);
+            PlotColor = new SolidColorBrush(myColor);
+            //update Chart
         }
     }
 

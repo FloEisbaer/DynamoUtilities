@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DropdownDescprition" xml:space="preserve">
+    <value>Takes a list of values and returns the selected item and index.</value>
+  </data>
+  <data name="DropdownPortDataInputToolTip" xml:space="preserve">
+    <value>input a list.</value>
+  </data>
+  <data name="DropdownPortDataOutputIndexToolTip" xml:space="preserve">
+    <value>index of the selected value.</value>
+  </data>
+  <data name="DropdownPortDataOutputValueToolTip" xml:space="preserve">
+    <value>the selected item.</value>
+  </data>
   <data name="UtilitiesDescription" xml:space="preserve">
     <value>A sample UI node with a dropdown.</value>
     <comment>Description for Hello Dynamo</comment>
@@ -126,5 +138,14 @@
   </data>
   <data name="UtilitiesPortDataOutputToolTip" xml:space="preserve">
     <value>return item.</value>
+  </data>
+  <data name="Watch2dDescription" xml:space="preserve">
+    <value>Takes a list of doubles and displays the values as graph or histogram.</value>
+  </data>
+  <data name="Watch2dPortDataInputToolTip" xml:space="preserve">
+    <value>input a list of doubles.</value>
+  </data>
+  <data name="Watch2dPortDataOutputToolTip" xml:space="preserve">
+    <value>returns the input.</value>
   </data>
 </root>

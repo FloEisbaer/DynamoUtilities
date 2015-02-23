@@ -23,7 +23,7 @@ namespace Utilities
 
     // The description will display in the tooltip
     // and in the help window for the node.
-    [NodeDescription("UtilitiesDescription")]//,typeof(Resources))]
+    [NodeDescription("Watch2dDescription", typeof(Resources))]
 
     [IsDesignScriptCompatible]
     public class Watch2D : NodeModel
@@ -101,12 +101,12 @@ namespace Utilities
             // work of setting up the ports yourself. To do this,
             // you can populate the InPortData and the OutPortData
             // collections with PortData objects describing your ports.
-            InPortData.Add(new PortData("1", Resources.UtilitiesPortDataInputToolTip));
+            InPortData.Add(new PortData("", Resources.Watch2dPortDataInputToolTip));
             //InPortData.Add(new PortData("2", Resources.UtilitiesPortDataInputToolTip));
 
             // Nodes can have an arbitrary number of inputs and outputs.
             // If you want more ports, just create more PortData objects.
-            OutPortData.Add(new PortData("", Resources.UtilitiesPortDataOutputToolTip));
+            OutPortData.Add(new PortData("", Resources.Watch2dPortDataOutputToolTip));
 
             // This call is required to ensure that your ports are
             // properly created.
