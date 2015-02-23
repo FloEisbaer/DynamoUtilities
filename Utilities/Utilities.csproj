@@ -75,11 +75,6 @@
     <Compile Include="DropdownControl.xaml.cs">
       <DependentUpon>DropdownControl.xaml</DependentUpon>
     </Compile>
-    <None Include="HelloDynamo.cs" />
-    <None Include="HelloDynamoControl.xaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>HelloDynamoControl.xaml</DependentUpon>
-    </None>
     <Compile Include="Watch2dControl.xaml.cs">
       <DependentUpon>Watch2dControl.xaml</DependentUpon>
     </Compile>
@@ -102,10 +97,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <None Include="HelloDynamoControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </None>
     <Page Include="Watch2dControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
