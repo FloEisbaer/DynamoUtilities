@@ -63,9 +63,9 @@ namespace Utilities.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Takes a list of values and returns the selected item and index..
         /// </summary>
-        internal static string DropdownDescprition {
+        internal static string DropdownDescription {
             get {
-                return ResourceManager.GetString("DropdownDescprition", resourceCulture);
+                return ResourceManager.GetString("DropdownDescription", resourceCulture);
             }
         }
         

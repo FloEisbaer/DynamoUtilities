@@ -11,20 +11,9 @@ using Utilities.Properties;
 
 namespace Utilities
 {
-    // The NodeName attribute is what will display on 
-    // top of the node in Dynamo
     [NodeName("Watch2D")]
-
-    // The NodeCategory attribute determines how your
-    // node will be organized in the library. You can
-    // specify your own category or use one of the 
-    // built-ins provided in BuiltInNodeCategories.
     [NodeCategory("Utilities")]
-
-    // The description will display in the tooltip
-    // and in the help window for the node.
     [NodeDescription("Watch2dDescription", typeof(Resources))]
-
     [IsDesignScriptCompatible]
     public class Watch2D : NodeModel
     {
@@ -142,6 +131,11 @@ namespace Utilities
 
         #region public methods
 
+        public void Updated()
+        {
+            OnNodeModified();
+        }
+
         /// <summary>
         /// If this method is not overriden, Dynamo will, by default
         /// pass data through this node. But we wouldn't be here if
@@ -153,26 +147,8 @@ namespace Utilities
         [IsVisibleInDynamoLibrary(false)]
         public override IEnumerable<AssociativeNode> BuildOutputAst(List<AssociativeNode> inputAstNodes)
         {
-            // When you create your own UI node you are responsible
-            // for generating the abstract syntax tree (AST) nodes which
-            // specify what methods are called, or how your data is passed
-            // when execution occurs.
-
-            // WARNING!!!
-            // Do not throw an exception during AST creation. If you
-            // need to convey a failure of this node, then use
-            // AstFactory.BuildNullNode to pass out null.
-
-            // Using the AstFactory class, we can build AstNode objects
-            // that assign doubles, assign function calls, build expression lists, etc.
             return new[]
             {
-                // In these assignments, GetAstIdentifierForOutputIndex finds 
-                // the unique identifier which represents an output on this node
-                // and 'assigns' that variable the expression that you create.
-                
-                // For the first node, we'll build a double node that 
-                // passes along our value for awesome.
                 AstFactory.BuildAssignment(
                     GetAstIdentifierForOutputIndex(0),
                     AstFactory.BuildExprList(inputAstNodes))
@@ -199,22 +175,11 @@ namespace Utilities
         /// <param name="nodeView">The NodeView representing the node in the graph.</param>
         public void CustomizeView(Watch2D model, NodeView nodeView)
         {
-            // The view variable is a reference to the node's view.
-            // In the middle of the node is a grid called the InputGrid.
-            // We reccommend putting your custom UI in this grid, as it has
-            // been designed for this purpose.
-
             var dm = nodeView.ViewModel.DynamoViewModel.Model;
-
-            // Create an instance of our custom UI class (defined in xaml),
-            // and put it into the input grid.
-            var watch2DControl = new Watch2DControl();
+            var watch2DControl = new Watch2DControl(model);
             
             nodeView.inputGrid.Children.Add(watch2DControl);
 
-            // Set the data context for our control to be this class.
-            // Properties in this class which are data bound will raise 
-            // property change notifications which will update the UI.
             watch2DControl.DataContext = model;
 
             model.RequestChangeWatch2D += delegate
